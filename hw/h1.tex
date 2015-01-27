@@ -41,17 +41,16 @@
 
 \item
 \begin{enumerate}[label={\arabic*}.]
-	\item Superscalar processor
-	\item[A.] A processor which has the ability to execute multiple intructions in the same clock cycle is called a superscalar processor
-	\\
-	\item Row major layout
-	\item[A.] TODO answer
-	\\
-	\item Cache pollution
-	\item[A.] TODO answer
-	\\
-	\item Instruction level parallelism
-	\item[A.] 
+	\item \textbf{Superscalar processor} -- A processor which has the ability to execute multiple instructions in the same clock cycle.
+	\item \textbf{Row major layout} -- Data layout ordering wherein contiguous blocks of memory are loaded with contiguous rows of the data (matrix) (as opposed to column major layout where contiguous columns are stored)
+	\item \textbf{Cache pollution} -- The situation wherein data fetched into the cache is unnecessary for the execution of the program, i.e. cache could've been used to load useful data to hide memory latency instead.
+	\item \textbf{Instruction level parallelism} -- Parallelism obtained by executing sequence of low-level instructions simultaneously through the use of hardware \& software techniques such as dynamic instruction issue (hardware) or compilers(software).
+	\item \textbf{Cache line} -- Unit of data fetched from main memory to cache
+	\item \textbf{Data dependency} -- The issue where the result of one particular instruction may be required to execute some subsequent instruction.
+	\item \textbf{Very Long Instruction Word (VLIW) Processor} -- Processors that can execute a group of instruction packed into a single long instruction word. (Used to exploit instruction level parallelism by resolving dependencies through software techniques).
+	\item \textbf{Spatial locality} -- A computation-centric view of memory access wherein the consecutive words in memory are used by successive instructions
+	\item \textbf{Single instruction multiple data} -- A parallel computing architecture where one instruction is executed by all the processing elements on all the data (each processing element works on one piece of the data). This execution is performed in lockstep operation.
+	\item \textbf{Implicit parallelism} -- Parallelism inherent in the program because of the nature of operations/computations being performed.
 \end{enumerate}
 
 \item  Prove by induction that the sum of the first $n$ odd positive integers is $n^2$.  Clearly label each step.
