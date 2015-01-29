@@ -1,4 +1,4 @@
-\documentclass{article}
+	\documentclass{article}
 
 \usepackage{algorithm}
 \usepackage[noend]{algorithmic}
@@ -53,12 +53,53 @@
 	\item \textbf{Implicit parallelism} -- Parallelism inherent in the program because of the nature of operations/computations being performed.
 \end{enumerate}
 
-\item  Prove by induction that the sum of the first $n$ odd positive integers is $n^2$.  Clearly label each step.
+\item  
+\begin{enumerate}[label={\arabic*}.]
+	\item 
+		For the given symmetric multiprocessing system, effective memory access time is 
+		\begin{align*}
+			0.8 * 10 + 0.1 * 100 + 0.1 * 400 = 58 ns
+		\end{align*}
+		This means the systems takes $58ns$ to fetch 1 word from memory (including cache).
+		Assuming we perform $1$ $operation/word$, the peak computation rate is
+		\begin{align*}
+			\frac{1}{58} * 10^9 = 17.24MFLOPS
+		\end{align*}
+	\item
+		For the given cache hit ratio in a single processor system, effective memory access time is
+		\begin{align*}
+			0.7 * 10 + 0.3 * 100 = 37ns
+		\end{align*}
+		Assuming the system performs $1$ $operation/word$ as before, the peak computation rate is 
+		\begin{align*}
+			\frac{1}{37} * 10 ^ 9 = 27.02 MFLOPS
+		\end{align*}
+\end{enumerate} 
 
 
-\item Suppose you owe someone $v$ cents and must repay using only coins.  You wish to use the fewest coins possible.  If we're using United States currency and have an effectively unlimited supply of each coin type, you can achieve this by repaying with quarters until you owe less than 25 cents, then dimes until you owe less than ten cents, then a nickel if you owe at least five cents, and finally pennies to finish squaring the debt.  A similar strategy also works if you include fifty-cent coins and dollar coins.\\
-Suppose instead you were in a country that mints coins with the following values:  one cent, 10 cents, 30 cents, and 40 cents.   Does the strategy of repeatedly giving the most valuable coin whose worth is less than or equal to the debt minimize the number of coins given?  Why or why not?
 
+\item
+\begin{enumerate}[label={\arabic*}.]
+	\item
+	Latency of DRAM is 100 cycles, i.e. 
+	\begin{align*}
+		= 100 * \textit{clock cycle of processor}
+		&= 100 * 1ns
+	\end{align*}
+	To execute the instruction in the for-loop once we need to fetch 2 words. One word of matrix $A$ and one of $B$. 
+	\begin{align}
+		\textit{Fetch one word of A} \to100ns		
+		\\\textit{Fetch one word of B} \to 100ns
+		\\\textit{Execute 1 multiply-add operation, 2 FLOPs} \to 1ns
+		\\\textit{2 FLOPs in 201ns}
+		\\\implies peak achievable performance &= \frac{2}{201} * 10^9 FLOPS
+		\\&= 9.95 MFLOPS 
+		\\&\approx 10 MFLOPS
+	\end{align}
+	
+	\item
+	
+\end{enumerate}
 
 \item Suppose you have an array $A$ of $n$ integers.  You wish to produce a two-dimensional array $B$ that is $n \times n$, where $B[i][j]$ (for $i < j$) holds the sum of elements $A[i..j]$ (inclusive).  $B[i][j]$, for $i \geq j$, is undefined - you may use those spots in $B$ however you want (or leave garbage/defaults there).
 \begin{enumerate}
