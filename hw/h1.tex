@@ -74,6 +74,8 @@
 		\begin{align*}
 			\frac{1}{37} * 10 ^ 9 = 27.02 MFLOPS
 		\end{align*}
+		
+		$\therefore$ The fractional computation is rate is $17.24 / 27.02$
 \end{enumerate} 
 
 
@@ -87,27 +89,53 @@
 		&= 100 * 1ns
 	\end{align*}
 	To execute the instruction in the for-loop once we need to fetch 2 words. One word of matrix $A$ and one of $B$. 
-	\begin{align}
+	\begin{align*}
 		\textit{Fetch one word of A} \to100ns		
 		\\\textit{Fetch one word of B} \to 100ns
-		\\\textit{Execute 1 multiply-add operation, 2 FLOPs} \to 1ns
-		\\\textit{2 FLOPs in 201ns}
-		\\\implies peak achievable performance &= \frac{2}{201} * 10^9 FLOPS
+		\\\textit{Execute 1 multiply-add operation, i.e. 2 FLOPs} \to 1ns
+		\\\textit{2 FLOPs in} 201ns
+		\\\implies \textit{peak achievable performance} &= \frac{2}{201} * 10^9 FLOPS
 		\\&= 9.95 MFLOPS 
 		\\&\approx 10 MFLOPS
-	\end{align}
+	\end{align*}
 	
 	\item
+	The processor fetches four words in each memory cycle. So, the processor fetches 2 words of matrix $A$ and 2 words of $B$ in one cycle.
+	\begin{align*}
+		\textit{Fetch 2 words of A and 2 words of B} \to 100ns
+		\\\textit{Execute 2 multiply-add operation, i.e. 4 FLOPs} \to 1ns
+		\\\textit{4 FLOPs in} 101ns
+		\\\implies \textit{peak achievable performance} &= \frac{4}{101} * 10^9 FLOPS
+		\\&= 39.60 MFLOPS 
+		\\&\approx 40 MFLOPS
+	\end{align*}
+	
 	
 \end{enumerate}
 
-\item Suppose you have an array $A$ of $n$ integers.  You wish to produce a two-dimensional array $B$ that is $n \times n$, where $B[i][j]$ (for $i < j$) holds the sum of elements $A[i..j]$ (inclusive).  $B[i][j]$, for $i \geq j$, is undefined - you may use those spots in $B$ however you want (or leave garbage/defaults there).
-\begin{enumerate}
-	\item Write the pseudo-code for an algorithm that takes $A$ as input and produces array $B$ in time $O(n^3)$
-	\item Write the pseudo-code for an algorithm that takes $A$ as input and produces array $B$ in time $O(n^2)$.  If you are certain of your answer for this, you may skip part (a) and instead write, for that part, ``see (b).''
-	
-\end{enumerate}
+\item
+	The latency of DRAM is $100 * 0.5 ns = 50 ns$.
+	Assume that the cache is of size 16$KB$. This is enough to fit the vector.
+	The processor first reads the vector from DRAM into the cache.
+	\\ This takes $4K * 50 ns = 200 \mu	s$
+	\\ We don't need to consider this into the computation rate since this is a one-time operation. Henceforth, the vector data will be loaded directly from the cache. 
+	\begin{align*}
+		\textit{Fetch 2 words of matrix} \to 50ns
+		\\\textit{Fetch 2 words of vector} \to 0.5 ns
+	\end{align*}
+	\text{The processor issues both the above instruction at the same time since it can issue 4 instructions in each cycle}. 
+	This means that the DRAM latency hides the cache latency, 
+	\\i.e. effective latency to load operands is 50ns.
+	\begin{align*}
+		\textit{Execute 1 multiply-add operation, i.e. 2 FLOPs} \to 0.5ns
+		\\\textit{2 FLOPs in } 50.5ns
+		\\\implies \textit{peak achievable performance} &= \frac{2}{50.5} * 10^9 FLOPS
+		\\&= 39.60 MFLOPS 
+		\\&\approx 40 MFLOPS
+	\end{align*}
 
+\item
+	
 \end{enumerate}
 
 
