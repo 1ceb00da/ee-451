@@ -93,7 +93,7 @@
 		\textit{Fetch one word of A} \to100ns		
 		\\\textit{Fetch one word of B} \to 100ns
 		\\\textit{Execute 1 multiply-add operation, i.e. 2 FLOPs} \to 1ns
-		\\\textit{2 FLOPs in} 201ns
+		\\\textit{2 FLOPs in } 201ns
 		\\\implies \textit{peak achievable performance} &= \frac{2}{201} * 10^9 FLOPS
 		\\&= 9.95 MFLOPS 
 		\\&\approx 10 MFLOPS
@@ -104,7 +104,7 @@
 	\begin{align*}
 		\textit{Fetch 2 words of A and 2 words of B} \to 100ns
 		\\\textit{Execute 2 multiply-add operation, i.e. 4 FLOPs} \to 1ns
-		\\\textit{4 FLOPs in} 101ns
+		\\\textit{4 FLOPs in } 101ns
 		\\\implies \textit{peak achievable performance} &= \frac{4}{101} * 10^9 FLOPS
 		\\&= 39.60 MFLOPS 
 		\\&\approx 40 MFLOPS
@@ -127,15 +127,66 @@
 	This means that the DRAM latency hides the cache latency, 
 	\\i.e. effective latency to load operands is 50ns.
 	\begin{align*}
-		\textit{Execute 1 multiply-add operation, i.e. 2 FLOPs} \to 0.5ns
-		\\\textit{2 FLOPs in } 50.5ns
-		\\\implies \textit{peak achievable performance} &= \frac{2}{50.5} * 10^9 FLOPS
-		\\&= 39.60 MFLOPS 
-		\\&\approx 40 MFLOPS
+		\textit{Execute 2 multiply-add operations, i.e. 4 FLOPs} \to 0.5ns
+		\\\textit{4 FLOPs in } 50.5ns
+		\\\implies \textit{peak achievable performance} &= \frac{4}{50.5} * 10^9 FLOPS
+		\\&= 79.20 MFLOPS 
+		\\&\approx 80 MFLOPS
 	\end{align*}
 
 \item
+	The latency of DRAM is $100 * 1 ns = 100 ns$. \\
+	The cache is not big enough to fit $4K * 4K$ words. \\
+	Since we have two multiply-add units , we need to fetch 2 pairs of words for each computation cycle. \\
+	Since the matrices are laid out in row-major order, for each computational step we fetch one row of matrix A and two rows of matrix B and keep only required column of matrix B. We don't need to fetch the entire rows here; but only 2 words of each row.
+	\begin{align*}
+		\textit{Fetch 2 words of A} \to 100ns \\
+		\textit{Fetch 2 words of B} \to 200ns \\
+	\end{align*}
+	Since the processor can issue four instructions in each cycle, both the above requests are issued in the same cycle. Since we're fetching 2 rows of matrix B we pay 200ns in latency cost. This effectively means that the total cost to fetch all required operands in 200ns, i.e. the latency to fetch operands of B hides that of A.
+	\begin{align*}
+		\textit{Execute 2 multiply-add operations, i.e. 4} \to 1ns \\
+		\textit{4 FLOPs in } 201ns \\
+		\implies \textit{peak achievable performance} &= \frac{4}{201} * 10^9 FLOPS \\
+		&= 19.9 MFLOPS \\
+		&\approx 20 MFLOPS
+	\end{align*}	
 	
+	
+\item
+	The processor clock is 1ns. This implies that cache latency is 1ns.\\
+	The DRAM latency is 100 cycles, i.e. 100ns. \\
+	The processor can execute 4 instructions in each cycle. \\
+	\\
+	The total execution time of the program is equal to:- \\
+	time to load $w$ words from DRAM to cache $+$ time to retrieve $w$ words from the cache $k$ times during the execution of the program $+$ computation time of the program.
+	\\
+	Since the cache line is 1 word wide, only one word is loaded from DRAM to cache in each memory cycle. $\therefore$ time to load $w$ words is $100w$ ns. \\
+	\\
+	The processor can issue 4 instructions in each cycle. Let's assume that the program is structured that the processor can execute on 4 words of the program in each cycle.
+	This means that the processor fetches 4 words from the cache in each cycle. This happens $k$ times for each word, i.e. data reuse.\\
+	$\therefore$ time to fetch data from cache to processor is $\frac{w}{4} * k$ $cycles$.
+	This is equal to $wk/4$ ns. \\
+	\\
+	The computation time of the program is given to be $n$ cycles, i.e. $n$ ns.\\
+	\\
+	$\therefore$ total execution time is $100w + (wk/4) + n$ ns.
+	
+	
+
+\item
+	Differences, Advantages/Disadvantages between shared address space and message passing models.
+\begin{table}[h]
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{1}{|c|}{\textbf{shared address space}}                                                                                                                                                                  & \textbf{message passing}                                                                                                                                       \\ \hline
+\begin{tabular}[c]{@{}c@{}}There is one big memory bank that all processors \\ read and write.\end{tabular}                                                                                                          & Each processor has it's own memory space.                                                                                                                      \\ \hline
+\begin{tabular}[c]{@{}c@{}}processing elements communicate \\ through global variables\end{tabular}                                                                                                                  & \begin{tabular}[c]{@{}c@{}}processing elements communicate through\\ exchanging \textit{send \& receive} messages\end{tabular}                                                          \\ \hline
+\begin{tabular}[c]{@{}c@{}}Easy to program; difficult to ensure correctness \\ and avoid race conditions\end{tabular}                                                                                                & \begin{tabular}[c]{@{}c@{}}Difficult to implement but offers more control \\ and flexibility to program\end{tabular}                                           \\ \hline
+\begin{tabular}[c]{@{}c@{}}Using shared-address it is easy to emulate \\ message passing model by partitioning memory \\ for each processor; processors communicate \\ by writing in each other's partition\end{tabular} & \begin{tabular}[c]{@{}c@{}}Not very easy to emulate shared-address model\\ using message passing because accessing remote memory\\ is very costly\end{tabular} \\ \hline
+\multicolumn{1}{l}{}                                                                                                                                                                                                 & \multicolumn{1}{l}{}                                                                                                                                          
+\end{tabular}
+\end{table}
 \end{enumerate}
 
 
