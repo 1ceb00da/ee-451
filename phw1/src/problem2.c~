@@ -36,7 +36,7 @@ int main(int argc, char** argv){
     
 	// measure the start time here
 	//  Your code goes here
-	printf"Code for block martrix mult goes here...");
+	for (
 	
 		
 	//
