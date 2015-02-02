@@ -6,7 +6,7 @@ int main(void){
 		int i, j, k;
 		struct timespec start, stop; 
 		double time;
-		long unsigned int n = 101; // matrix size is n*n
+		long unsigned int n = 100; // matrix size is n*n
 		
 		double **A = (double**) malloc (sizeof(double*)*n);
 		double **B = (double**) malloc (sizeof(double*)*n);
