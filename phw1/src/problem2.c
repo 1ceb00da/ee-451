@@ -16,8 +16,8 @@ int main(int argc, char** argv){
   	unsigned char *a = (unsigned char*) malloc (sizeof(unsigned char)*h*w);
   	int b, m, n;
   	char *bstr = argv[1];
+  	int j, k;
   	n = w;
-  	int i, j, k;
   	// parse block size from command line; default is 8
   	if (bstr == NULL) {
   		printf("Usage: %s <block_size integer>.", argv[0]);
@@ -36,7 +36,8 @@ int main(int argc, char** argv){
     
 	// measure the start time here
 	//  Your code goes here
-	printf"Code for block martrix mult goes here...");
+	printf("Code for block martrix mult goes here...");
+	
 	
 		
 	//
