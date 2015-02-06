@@ -34,7 +34,7 @@ int main(int argc,char **argv){
       	}
       	b = *bstr - '0';
   	    m = n / b;
-  	    printf("%d\n",m);
+
 		for (i=0; i<n; i++) {
 			A[i] = (double*) malloc(sizeof(double)*n);
 			B[i] = (double*) malloc(sizeof(double)*n);
