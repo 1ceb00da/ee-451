@@ -4,26 +4,61 @@
 #include <omp.h>
 #include <time.h>
 
-#define h  800 
+#define h  800
 #define w  800
 
-#define iterations_total 1e6
-#define k 4
+#define iterations_total 30
 
 #define input_file  "input.raw"
 #define output_file "output.raw"
 
-void findClosestCentroids(int *idx, unsigned char *a, int n, float *centroids, int k) {
-    int i, j;
-    for (i = 0;  i < n; i++) {
-        for (j = 0; j < k; j++) {
-            // temp[j] = dist(a[i], centroids[j]);
-        }
-        
-    }
+float dist(a, b) {
+    return ((float)fabs(pow(a,2) - pow(b,2)));
 }
 
-void computeMeans(float *centroids, unsigned char *a, int *idx, int k_) {
+int min(float *ar, int n) {
+    int min = 0;
+    int i;
+    for (i = 0; i < n; i++) {
+        if (ar[i] < ar[min])
+            min = i;
+    }
+    return min;
+}
+
+void findClosestCentroids(int *cluster, unsigned char *a, int n, float *centroids, int k) {
+    int i, m;
+    float *temp = malloc(k * sizeof(float));
+    for (i = 0;  i < n; i++) {
+        for (m = 0; m < k; m++) {
+            temp[m] = dist(a[i], centroids[m]);
+        }
+        cluster[i] = min(temp, k);
+        
+    }
+    free(temp);
+}
+
+void computeMeans(
+    float *centroids, int K,
+    unsigned char *a, int n, 
+    int *cluster) {
+    
+    int k, i;
+    float sum;
+    int count;
+    
+    for (k = 0; k < K; k++) {
+        sum = 0.0f;
+        count = 0;
+        for (i = 0; i < n; i++) {
+            if (cluster[i] == k) {
+                sum += a[i];
+                count++;
+            }
+        centroids[k] = (sum / count);
+        }
+    }
 
 }
 
@@ -36,15 +71,16 @@ void initKMeans(float *m) {
 }
 
 int main(int argc, char** argv){
-    int i, iter;
+    int i, iter, k;
 	struct timespec start, stop; 
 	double time;
     FILE *fp;
 
   	unsigned char *a = (unsigned char*) malloc (sizeof(unsigned char)*h*w);
-    int *idx = (int *)malloc(sizeof(int *)*h*w);
-    float *centroids = (float *)malloc(sizeof(float *)*h*w);
+    int *cluster = (int *)malloc(sizeof(int *)*h*w);
+    float *centroids = (float *)malloc(sizeof(float *)*k);
     
+    k = 4;
     
 	// the matrix is stored in a linear array in row major fashion
 	if (!(fp=fopen(input_file, "rb"))) {
@@ -61,12 +97,19 @@ int main(int argc, char** argv){
 	initKMeans(centroids);
 	
 	for (iter = 0; iter < iterations_total; iter++) {
-		//findClosestCentroids(idx, a, h*w, centroids, k);
-		//computeMeans(centrods, a, idx, k);
-		
-		
+		findClosestCentroids(cluster, a, h*w, centroids, k);
+		computeMeans(
+		    centroids, k,
+		    a, w*h,
+		    cluster);
 	}	
-	//
+	
+	// Map each pixel to its centroid value
+	for (i = 0; i < (w*h); i++) {
+	    a[i] = centroids[cluster[i]];
+	}
+	
+	
 	
 	// measure the end time here
 	if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) { perror("clock gettime");}
@@ -81,6 +124,10 @@ int main(int argc, char** argv){
 	}	
 	fwrite(a, sizeof(unsigned char),w*h, fp);
     fclose(fp);
+    
+    free(a);
+    free(cluster);
+    free(centroids);
     
     return 0;
 }
