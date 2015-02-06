@@ -12,8 +12,9 @@
 #define input_file  "input.raw"
 #define output_file "output.raw"
 
-float dist(a, b) {
-    return ((float)fabs(pow(a,2) - pow(b,2)));
+float dist(unsigned char a, float b) {
+    a = (float)a;
+    return ((float)fabs(a-b));
 }
 
 int min(float *ar, int n) {
