@@ -54,8 +54,9 @@ int main(int argc,char **argv){
 		// Your code goes here //
 		// Matrix C = Matrix A * Matrix B //	
 		//*******************************//
-		for (i = 0; i < m; i++) {
-			for (j = 0; j < m; j++) {
+		m = b * (n/b);
+		for (i = 0; i < m; i+=b) {
+			for (j = 0; j < m; j+=b) {
 				// Inside C_block(i,j)
 				// actual c indices are
 				// c(i',j')
@@ -67,12 +68,12 @@ int main(int argc,char **argv){
 				// B(jxb to )
 				
 				//printf("\nprinting c_block %d,%d\n", i, j);
-				for (bi = i*b; bi < ((i*b)+b); bi++) {
-				    for (bj = j*b; bj < ((j*b)+b); bj++) {
+				for (bi = 0; bi < n; bi++) {
+				    for (bj = j; bj < ((j+b)>n?n:(j+b)); bj++) {
 				        //printf("%f ", C[bi][bj]);
 				        // naive multiply c[bi][bj] = a[bi][n] * b[n][bj]
 				        //multiply_matrices(C, bi, bj, A, bi, n, B, n, bj);
-				        for (k = 0; k < n; k++)
+				        for (k = i; k < ((i+b)>n?n:(i+b)); k++)
 				            //printf("%f ", B[k][b]);
 				            C[bi][bj] += A[bi][k] * B[k][bj];
 				    }
