@@ -82,7 +82,7 @@ int main(int argc, char **argv){
 		double **C = (double**) malloc (sizeof(double*)*n);
 		
 		char *pstr;
-		char numthreads;
+		int numthreads;
 		
 		double load;
 		
@@ -104,8 +104,7 @@ int main(int argc, char **argv){
   		    return 1;
       	}
       	
-      	numthreads = atoi(pstr);
-		
+      	numthreads = atoi(pstr);	
 		load = floor(n/(double)numthreads);
 		
 		printf("load per thread = n/p = %lf\n",load);
@@ -148,7 +147,7 @@ int main(int argc, char **argv){
 		time = (stop.tv_sec - start.tv_sec)+ (double)(stop.tv_nsec - start.tv_nsec)/1e9;
 		
 		printf("Number of FLOPs = %lu, Execution time = %f sec,\n%lf MFLOPs per sec\n", 2*n*n*n, time, 1/time/1e6*2*n*n*n);		
-		printf("C[100][100]=%lf\n", C[2][3]);
+		printf("C[100][100]=%lf\n", C[100][100]);
 		
 		
 		
