@@ -18,6 +18,7 @@ struct thread_data {
 	int a,b;
 	int n;
 };
+
 void printmat(double **A, int n) {
 	int i,j;
 		for (i = 0; i < n; i++) {
