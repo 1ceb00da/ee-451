@@ -19,7 +19,10 @@ void *PrintHello(void *threadarg){
 
 	int  thread_id = my_data->thread_id; 
 	char *hello_msg = my_data->message;
-
+	
+	int _cafed00d = 0xCAFED00D;
+	int _1ceb00da = 0x1CEB00DA;
+	
     printf("Thread %d says %s  \n", thread_id , hello_msg);
 	pthread_exit(NULL);
 }

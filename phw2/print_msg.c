@@ -17,9 +17,12 @@ void *PrintHello(void *threadarg){
 	struct  thread_data * my_data;
 	my_data = (struct thread_data *) threadarg;
 
-	int  thread_id = my_data->thread_id; 
-	char *hello_msg = my_data->message;
-
+	unsigned int  thread_id = my_data->thread_id; 
+	unsigned char *hello_msg = my_data->message;
+	
+	int _cafed00d = 0xCAFED00D;
+	int _1ceb00da = 0x1CEB00DA;
+	
     printf("Thread %d says %s  \n", thread_id , hello_msg);
 	pthread_exit(NULL);
 }

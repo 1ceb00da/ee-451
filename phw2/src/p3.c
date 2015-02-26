@@ -31,17 +31,25 @@ int min(float *ar, int n) {
     return min;
 }
 
+void initKMeans(float *m) {
+
+    return;
+}
+
+
+struct thread_data {
+    unsigned char *arr;
+    int to, from;
+    float *computed_means;
+    int *cluster;
+    int thread_id;
+    int num[6];
+    float sum[6];
+} thread_data_array[8];
+
+
 void findClosestMeans(int *cluster, unsigned char *a, int from, int to, float *means, int k) {
-    int i, m;
-    float *temp = malloc(k * sizeof(float));
-    for (i = from;  i <= to; i++) {
-        for (m = 0; m < k; m++) {
-            temp[m] = dist(a[i], means[m]);
-        }
-        cluster[i] = min(temp, k);
-        
-    }
-    free(temp);
+
 }
 
 
@@ -57,7 +65,7 @@ void computeMeans(
     for (k = 0; k < K; k++) {
         sum = 0.0f;
         count = 0;
-        for (i = from; i <= to; i++) {
+        for (i = 0; i <= (to-from); i++) {
             if (cluster[i] == k) {
                 sum += a[i];
                 count++;
@@ -68,24 +76,6 @@ void computeMeans(
 
 }
 
-void initKMeans(float *m) {
-    m[0] = 0.0;
-    m[1] = 65.0;
-    m[2] = 100.0;
-    m[3] = 125.0;
-    m[4] = 190.0;
-    m[5] = 255.0;
-    return;
-}
-
-
-struct thread_data {
-    unsigned char *arr;
-    int to, from;
-    float *computed_means;
-} thread_data_array[8];
-
-
 
 void *KMeans(void *data) {
 
@@ -94,10 +84,12 @@ void *KMeans(void *data) {
     int to = arg->to;
     unsigned char *arr = arg->arr;
     int *cluster = malloc(sizeof(int *) * (to-from));
-    float *means = (float *)malloc(sizeof(float *)*K);
+    float means[6];
     
-    int i;
-    
+    int i, i2, _w, m;
+    float temp[K];
+	
+    printf("thread %d starting..\n", arg->thread_id);
     
     // get data from struct
      // arr, arr_size
@@ -105,22 +97,35 @@ void *KMeans(void *data) {
      // i.e. its the ith row
      // arr is a pointer to the main array 'a'
      // from and to indicate the bounds that this thread dels with
-	initKMeans(means);
+    means[0] = 0.0;
+    means[1] = 65.0;
+    means[2] = 100.0;
+    means[3] = 125.0;
+    means[4] = 190.0;
+    means[5] = 255.0;
     for (i = 0; i < 50; i++) {
-        findClosestMeans(cluster, arr, from, to, means, K);
-        computeMeans(means, K, arr, from, to, cluster);
+        //findClosestMeans(cluster, arr, from, to, means, K);
+	    for (i2 = 0;  i2 <= (to-from); i2++) {
+    	    for (m = 0; m < K; m++) {
+    	        temp[m] = (float)fabs(arr[i2+from] - means[m]);
+    	    }
+    	    cluster[i] = min(temp, K);
+    	    _w = min(temp, K);
+    	    arg->sum[_w] += arr[i+from];
+    	    arg->num[_w] += 1;
+    	    arg->cluster[i2+from] = cluster[i];
+		}
+
+    
+    //computeMeans(means, K, arr, from, to, cluster);    
     }
-    
+
     // return means
-    arg->computed_means = means;
-    
- 	// Map each pixel to its centroid value
-	for (i = 0; i < (to-from); i++) {
-	    // Review -- this line from prev hw
-	    // a[i] = means[cluster[i]];
-	} 
+	
+    printf("thread %d finishing..\n", arg->thread_id);
     
 }
+
 
 int main(int argc, char** argv){
     int i, iter, k, rc;
@@ -130,14 +135,23 @@ int main(int argc, char** argv){
 
   	unsigned char *a = (unsigned char*) malloc (sizeof(unsigned char)*h*w);
     int *cluster = (int *)malloc(sizeof(int *)*h*w);
-    float *final_means = (float *)malloc(sizeof(float *)*k);
+    int *temp_cluster;
+    float *final_means = (float *)malloc(sizeof(float *)*K);
+    
+    float *temp_means;
     
     int p, left, right;
+    int ii,j;
+    
+    float *sum;
+    int *num;
+    
     char *pstr;
     
+    double load;
     pthread_t threads[8];
     
-    k = 4;
+    k = 6;
     
     pstr = argv[1];
 	if (pstr == NULL) {
@@ -145,6 +159,8 @@ int main(int argc, char** argv){
   		return 1;
     }
 	p = atoi(pstr);
+	load = floor((w*h)/(double)p);
+	
 	
 	// the matrix is stored in a linear array in row major fashion
 	if (!(fp=fopen(input_file, "rb"))) {
@@ -160,42 +176,47 @@ int main(int argc, char** argv){
 	//  Your code goes here
     // ------------------ //
 	for (i = 0; i < p; i++) {
-	    left = i * w;
-	    right = ((i+1) * h) - 1;
+		
+	
+	    left = i * load;
+	    right = ((i+1)  * load) - 1;
 	    
 	    // formulate thread data
 	    thread_data_array[i].arr = a;
 	    thread_data_array[i].from = left;
 	    thread_data_array[i].to = right;
-
+	    thread_data_array[i].thread_id = i;
+	    thread_data_array[i].cluster = cluster;
+	    
 	    rc = pthread_create(&threads[i], NULL, KMeans, (void *) &thread_data_array[i]);
 	    if (rc) { 
 	        printf("ERROR; return code from pthread_create() is %d\n", rc); exit(-1);
 	    }
 	}
 	
-	
 	for (i = 0; i < p; i++) {
 	    rc = pthread_join(threads[i], NULL);
+	    sum = thread_data_array[i].sum;
+	    num = thread_data_array[i].num;
+	    
 	    if (rc) { printf("ERROR; return code from pthread_join() is %d\n", rc); exit(-1);
 	    }
 	}
 	
+
+
+	// combine all means
+	for (i = 0; i < K; i++) {
+		final_means[i] = sum[i] / num[i];
+	}
 	
-	// TODO: combine all means
-	
-	// TODO: write to output file
-	
-	// End of custom code //
-	// ------------------ //
-	
-	// measure the end time here
+ 	// Map each pixel to its centroid value
+	for (i = 0; i < (right-left); i++) {
+	    // Review -- this line from prev hw
+	    a[i] = final_means[cluster[i]];
+	} 
+		// measure the end time here
 	if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) { perror("clock gettime");}
-	
-	// print out the execution time here
-    time = (stop.tv_sec - start.tv_sec)+ (double)(stop.tv_nsec - start.tv_nsec)/1e9;
-    printf("Execution time = %f sec\n", time);	
-	
 	
 	if (!(fp=fopen(output_file,"wb"))) {
 		printf("can not opern file\n");
@@ -203,6 +224,18 @@ int main(int argc, char** argv){
 	}	
 	fwrite(a, sizeof(unsigned char),w*h, fp);
     fclose(fp);
+	
+	// End of custom code //
+	// ------------------ //
+	
+
+	
+	// print out the execution time here
+    time = (stop.tv_sec - start.tv_sec)+ (double)(stop.tv_nsec - start.tv_nsec)/1e9;
+    printf("Execution time = %f sec\n", time);	
+	
+	
+
     
     free(a);
     free(cluster);
