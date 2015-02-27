@@ -178,7 +178,7 @@ int main(int argc, char** argv){
 	for (i = 0; i < p; i++) {
 		
 	
-	    left = i * load;
+	    left = i * load * 1024;
 	    right = ((i+1)  * load) - 1;
 	    
 	    // formulate thread data
