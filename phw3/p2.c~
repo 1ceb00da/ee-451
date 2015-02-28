@@ -109,17 +109,27 @@ void *KMeans(void *data) {
     means[5] = 255.0;
     
     for (iter = 0; iter < 50; iter++) {
+	    
 	    for (i = from;  i <= to; i++) {
+
+    	    // assing data[i] to corerspoding cluster
     	    for (m = 0; m < K; m++) {
     	        temp[m] = (float)fabs(dist(arr[i],means[m]));
     	    }
     	    cluster[i%load-1] = min(temp, K);
     	    _w = min(temp, K);
-    	    arg->sum[_w] += arr[i];
-    	    arg->num[_w] += 1;
     	    arg->cluster[i] = cluster[i%load-1];
     	    
+    	    // update sum and num
+    	    arg->sum[_w] += arr[i];
+    	    arg->num[_w] += 1;
+
+    	    
 		}
+		
+		// barrier according to slide; review!
+		// TODO
+		
     }
 	
     printf("thread %d finishing..\n", arg->thread_id);

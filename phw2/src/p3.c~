@@ -107,8 +107,8 @@ void *KMeans(void *data) {
     means[3] = 125.0;
     means[4] = 190.0;
     means[5] = 255.0;
+    
     for (iter = 0; iter < 50; iter++) {
-        //findClosestMeans(cluster, arr, from, to, means, K);
 	    for (i = from;  i <= to; i++) {
     	    for (m = 0; m < K; m++) {
     	        temp[m] = (float)fabs(dist(arr[i],means[m]));
@@ -123,7 +123,7 @@ void *KMeans(void *data) {
     }
 	
     printf("thread %d finishing..\n", arg->thread_id);
-    
+    //free(cluster);
 }
 
 
