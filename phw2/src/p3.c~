@@ -45,41 +45,12 @@ void initKMeans(float *means) {
 struct thread_data {
     unsigned char *arr;
     int to, from;
-    float *computed_means;
+    float *thread_means;
     int *cluster;
     int thread_id;
     int num[6];
     float sum[6];
 } thread_data_array[8];
-
-
-void findClosestMeans(int *cluster, unsigned char *a, int from, int to, float *means, int k) {
-
-}
-
-
-void computeMeans(
-    float *means, int K,
-    unsigned char *a, int from, int to, 
-    int *cluster) {
-    
-    int k, i;
-    float sum;
-    int count;
-    
-    for (k = 0; k < K; k++) {
-        sum = 0.0f;
-        count = 0;
-        for (i = 0; i <= (to-from); i++) {
-            if (cluster[i] == k) {
-                sum += a[i];
-                count++;
-            }
-        means[k] = (sum / count);
-        }
-    }
-
-}
 
 
 void *KMeans(void *data) {
@@ -93,7 +64,8 @@ void *KMeans(void *data) {
     
     int load = to-from+1;
     
-    int *cluster = malloc(sizeof(int *) * (load));
+    int *cluster = (int *) malloc(sizeof(int *) * (load));
+    float *thread_means = (float *) malloc(sizeof(float *) * K);
     float means[6];
     
     int iter, i, _w, m;
@@ -101,12 +73,14 @@ void *KMeans(void *data) {
 	
     printf("thread %d starting..\n", arg->thread_id);
     
+    // init means
     means[0] = 0.0;
     means[1] = 65.0;
     means[2] = 100.0;
     means[3] = 125.0;
     means[4] = 190.0;
     means[5] = 255.0;
+    arg->thread_means = thread_means;
     
     for (iter = 0; iter < 50; iter++) {
 	    for (i = from;  i <= to; i++) {
@@ -119,6 +93,9 @@ void *KMeans(void *data) {
     	    arg->num[_w] += 1;
     	    arg->cluster[i] = cluster[i%load-1];
     	    
+		}
+		for (m = 0; m < K; m++) {
+			thread_means[m] = arg->sum[m] / arg->num[m];
 		}
     }
 	
@@ -137,7 +114,7 @@ int main(int argc, char** argv){
     int *cluster = (int *)malloc(sizeof(int *)*h*w);
     int *temp_cluster;
     float *final_means = (float *)malloc(sizeof(float *)*K);
-    
+    float **thread_means;
     float *temp_means;
     
     int p, left, right;
@@ -145,7 +122,7 @@ int main(int argc, char** argv){
     
     float *sum;
     int *num;
-    
+    int m;
     char *pstr;
     
     double load;
@@ -160,7 +137,7 @@ int main(int argc, char** argv){
     }
 	p = atoi(pstr);
 	load = floor((w*h)/(double)p);
-	
+	thread_means = (float **)malloc(sizeof(float **) * p);
 	
 	// the matrix is stored in a linear array in row major fashion
 	if (!(fp=fopen(input_file, "rb"))) {
@@ -198,17 +175,24 @@ int main(int argc, char** argv){
 	    rc = pthread_join(threads[i], NULL);
 	    sum = thread_data_array[i].sum;
 	    num = thread_data_array[i].num;
-	    
+	    thread_means[i] = thread_data_array[i].thread_means;
 	    if (rc) { printf("ERROR; return code from pthread_join() is %d\n", rc); exit(-1);
 	    }
 	}
 	
 
-
 	// combine all means
-	for (i = 0; i < K; i++) {
-		final_means[i] = sum[i] / num[i];
+	for (i = 0; i < p; i++) {
+		temp_means = thread_data_array[i].thread_means;
+		for (m = 0; m < K; m++) {
+			final_means[m] += temp_means[m];
+		}
 	}
+	
+	for (i = 0; i < K; i++) {
+		final_means[i] = final_means[i] / p;
+	}
+	
 	
  	// Map each pixel to its centroid value
 	for (i = 0; i < w*h; i++) {
