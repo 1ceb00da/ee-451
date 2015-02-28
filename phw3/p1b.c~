@@ -57,7 +57,6 @@ void *Consumer(void *arg) {
 		
 		
 		if (n == 0) {
-			pthread_cond_signal(&shelf_cv);
 			pthread_cond_wait(&shelf_cv, &shelf_lock);
 		}
 		
