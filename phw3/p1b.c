@@ -20,17 +20,13 @@ void *Producer(void *arg) {
 	while (p < 30) {
 		pthread_mutex_lock(&shelf_lock);
 		
-		if (n == 10) {
-			pthread_cond_wait(&shelf_cv, &shelf_lock);
-		}
-		
-		else if (n == 0) {
+		if (n == 0) {
 			n = n + 2;
 			p = p + 2;
-			printf("Producer has put 2 cookies; # of cookies on the shelf changes from %d to %d.\n",(n-2),n);
 			pthread_cond_broadcast(&shelf_cv);
+			printf("Producer has put 2 cookies; # of cookies on the shelf changes from %d to %d.\n",(n-2),n);
 		}
-		
+
 		else if (n < 9) {
 			n = n + 2;
 			p = p + 2;
@@ -41,6 +37,10 @@ void *Producer(void *arg) {
 			n = n + 1;
 			p = p + 1;
 			printf("Producer has put 1 cookies; # of cookies on the shelf changes from %d to %d.\n",(n-1),n);
+		}
+		
+		else if (n == 10) {
+			pthread_cond_wait(&shelf_cv, &shelf_lock);
 		}
 		
 		pthread_mutex_unlock(&shelf_lock);
