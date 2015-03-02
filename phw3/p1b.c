@@ -60,6 +60,13 @@ void *Consumer(void *arg) {
 			pthread_cond_wait(&shelf_cv, &shelf_lock);
 		}
 		
+		else if (n == 10) {
+			n = n - 1;
+			c = c + 1;
+			pthread_cond_signal(&shelf_cv);
+			printf("Consumer %d has taken 1 cookies; # of cookies on the shelf changes from %d to %d.\n",params->id, (n+1), n);
+		}
+		
 		else if (n > 0) {
 			n = n - 1;
 			c = c + 1;
