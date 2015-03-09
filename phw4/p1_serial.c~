@@ -33,7 +33,7 @@ int main(void){
 	printf("%d\n", chunk);
 	#pragma omp parallel shared(data_point, num_of_points_in_circle) private(i,tid)
 	{
-		#pragma omp for schedule(static, chunk) nowait
+		#pragma omp for schedule(static, chunk) reduction(+:num_of_points_in_circle)
 		for(i=0; i<num_of_points; i++){
 		tid = omp_get_thread_num();
 		//printf("in thread %d, i=%d, num_of_points=%d, num_of_points_circle=%d\n", tid, num_of_points, num_of_points_in_circle);
@@ -43,13 +43,13 @@ int main(void){
 				num_of_points_in_circle++;
 			}	
 		}
+	
 	}
-		
 	///////******************************////
 	
 	if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) { perror("clock gettime");}		
 	time = (stop.tv_sec - start.tv_sec)+ (double)(stop.tv_nsec - start.tv_nsec)/1e9;
 		
 	pi =4*(double)num_of_points_in_circle/(double)num_of_points;
-	printf("Estimated pi is %f, execution time = %f sec\n",  pi, time);		
+	printf("Estimated pi is %f, execution time = %f sec\n",  pi, time);
 }	
