@@ -5,3 +5,5 @@ p1_for: p1_for.c
 	gcc -lrt -fopenmp -o p1_for p1_for.c
 p1_section: p1_section.c
 	gcc -lrt -fopenmp -o p1_section p1_section.c
+clean:
+	rm p1_section p1_for p1_serial

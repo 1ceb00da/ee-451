@@ -14,7 +14,7 @@ int main(void){
 	int i,tid;
 	int num_of_points_in_circle;
 	int chunk;
-	double cond;
+	
 	double pi;
 	struct timespec start, stop; 
 	double time;
@@ -31,25 +31,19 @@ int main(void){
 	////////**********Use OpenMP to parallize this loop***************//
 	omp_set_num_threads(4);
 	chunk = num_of_points/4;
-	#pragma omp parallel shared(data_point, num_of_points_in_circle)
+	printf("%d\n", chunk);
+	#pragma omp parallel shared(data_point, num_of_points_in_circle) private(i,tid)
 	{
+		#pragma omp for schedule(static, chunk) reduction(+:num_of_points_in_circle)
+		for(i=0; i<num_of_points; i++){
+		tid = omp_get_thread_num();
+			if((data_point[i].x-0.5)*(data_point[i].x-0.5)
+			+(data_point[i].y-0.5)*(data_point[i].y-0.5)
+			<=0.25) {
+				num_of_points_in_circle++;
+			}	
+		}
 	
-	    #pragma omp sections
-	    {
-	        #pragma omp section
-	        {
-		        for(i=0; i<num_of_points; i++){
-		            tid = omp_get_thread_num();
-			            cond = (data_point[i].x-0.5)*(data_point[i].x-0.5)
-			            +(data_point[i].y-0.5)*(data_point[i].y-0.5)
-			            <=0.25;
-			            if(cond) {
-				            num_of_points_in_circle++;
-			            }			
-			
-		        }
-		    }
-	    }
 	}
 	///////******************************////
 	

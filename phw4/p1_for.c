@@ -31,7 +31,6 @@ int main(void){
 	////////**********Use OpenMP to parallize this loop***************//
 	omp_set_num_threads(4);
 	chunk = num_of_points/4;
-	printf("%d\n", chunk);
 	#pragma omp parallel shared(data_point, num_of_points_in_circle) private(i,tid)
 	{
 		#pragma omp for schedule(static, chunk) reduction(+:num_of_points_in_circle)
