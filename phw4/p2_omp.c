@@ -3,8 +3,11 @@
 #include <time.h>
 #include <omp.h>
 #include <math.h>
+#include<omp.h>
+
 
 #define		size	   16
+//16*1024*1024
 void printArray(int *array) {
         int x;
         
@@ -67,8 +70,17 @@ void quickSort(int *array, int start, int end){
     int pivotIdx; int x;
     if (start < end) {
         pivotIdx = partition(array, start, end);
-        quickSort(array, start, pivotIdx);
-        quickSort(array, pivotIdx+1, end);
+      #pragma omp parallel sections
+      {  
+        #pragma omp section
+        {
+            quickSort(array, start, pivotIdx);
+        }
+        #pragma omp section
+        {
+            quickSort(array, pivotIdx+1, end);
+        }
+     }
     }
 }
 
@@ -85,8 +97,8 @@ int main(void){
 	
 	if( clock_gettime(CLOCK_REALTIME, &start) == -1) { perror("clock gettime");}
 	////////**********Your code goes here***************//
+	omp_set_num_threads(2);
 	quickSort(m, 0, size);
-		
 			
 	///////******************************////
 	

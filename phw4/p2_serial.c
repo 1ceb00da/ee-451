@@ -4,7 +4,7 @@
 #include <omp.h>
 #include <math.h>
 
-#define		size	   16
+#define		size	   16*1024*1024
 void printArray(int *array) {
         int x;
         
