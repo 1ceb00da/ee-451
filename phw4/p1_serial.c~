@@ -4,6 +4,7 @@
 #include <omp.h>
 
 #define		num_of_points	   40000000
+
 typedef struct{
 	double x;  
 	double y;

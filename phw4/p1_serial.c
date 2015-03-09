@@ -4,6 +4,7 @@
 #include <omp.h>
 
 #define		num_of_points	   40000000
+
 typedef struct{
 	double x;  
 	double y;
@@ -36,7 +37,6 @@ int main(void){
 		#pragma omp for schedule(static, chunk) reduction(+:num_of_points_in_circle)
 		for(i=0; i<num_of_points; i++){
 		tid = omp_get_thread_num();
-		//printf("in thread %d, i=%d, num_of_points=%d, num_of_points_circle=%d\n", tid, num_of_points, num_of_points_in_circle);
 			if((data_point[i].x-0.5)*(data_point[i].x-0.5)
 			+(data_point[i].y-0.5)*(data_point[i].y-0.5)
 			<=0.25) {
