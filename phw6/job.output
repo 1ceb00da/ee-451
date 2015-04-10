@@ -1,0 +1,30 @@
+----------------------------------------
+Begin PBS Prologue Fri Apr 10 11:43:26 PDT 2015
+Job ID:            11896663.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Name:              sum
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc1122 hpc2369 
+PVFS:              /scratch (394G), /staging (328T)
+TMPDIR:            /tmp/11896663.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Fri Apr 10 11:43:49 PDT 2015
+----------------------------------------
+FINAL SUM for p2_3= 47126
+----------------------------------------
+Begin PBS Epilogue Fri Apr 10 11:43:51 PDT 2015
+Job ID:           11896663.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         sum
+Session:          7753
+Limits:           neednodes=2:ppn=2:myri,nodes=2:ppn=2:myri,walltime=00:00:05
+Resources:        cput=00:00:00,mem=3220kb,vmem=144088kb,walltime=00:00:01
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Fri Apr 10 11:43:58 PDT 2015
+----------------------------------------

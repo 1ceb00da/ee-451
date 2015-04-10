@@ -23,14 +23,12 @@ void read_array_file(int *a) {
 int main(int argc, char **argv) {
 
 	FILE *fp;
+	int a[64], b[64], c[64], d[64];
 	int size, rank;
 	int i;
 	int sum;
 	int finalsum;
-	int recv[16];
-	int rsums[4];
-	int a[64];
-
+	
 	finalsum = 0;
 	sum = 0;
 	
@@ -42,21 +40,28 @@ int main(int argc, char **argv) {
 		read_array_file(a);
 	}
 
-//	MPI_Bcast(a, 64, MPI_INT, 0, MPI_COMM_WORLD);
-	// check if scatter should send 64 or each of 16 to other procs -- this one sends all 64
-//	MPI_Scatter(a, 64, MPI_INT, recva, 64, MPI_INT, 0, MPI_COMM_WORLD);
-	
-	MPI_Scatter(a,16,MPI_INT, recv,16,MPI_INT,0,MPI_COMM_WORLD);
-	for (i=0;i<16;i++) {
-		sum += recv[i];
-	}
-	MPI_Gather(&sum, 1, MPI_INT, rsums, 1, MPI_INT, 0, MPI_COMM_WORLD);
-	
+	MPI_BCAST(a, 64, MPI_INT, 0, MPI_COMM_WORLD);
+
+	//TODO for loop to sum up
 	if (rank == 0) {
-		for (i=0;i<4;i++)
-			finalsum += rsums[i];
-		printf("FINAL SUM = %d\n", finalsum);
+		for (i =0; i<16;i++)
+			sum += a[i];
 	}
+	else if (rank == 1) {
+		for (i=16;i<32;i++)
+			sum += a[i];
+	}
+	else if (rank == 2) {
+		for (i=32;i<48;i++)
+			sum += a[i];
+	}
+	else if (rank == 3) {
+		for (i=48;i<64;i++)
+			sum += a[i];
+	}
+	//TODO  MPI_SUM
+	MPI_Reduce(sum, finalsum, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
 	MPI_Finalize();
 	
 	return 0;	

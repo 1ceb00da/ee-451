@@ -7,16 +7,16 @@
 #PBS -l walltime=0:00:05
 
 # Send all output sent to standard out to a file 
-#PBS -o job.output
+#PBS -o mpiringjob.output
 
 # Send all output sent to standard error to a file
-#PBS -e job.error
+#PBS -e mpiringjob.error
 
 # send my email address an email at the beginning (b) and the end (e) of the job
 #PBS -m be
 
 # My job is called give_a_name
-#PBS -N sum
+#PBS -N mpi_ring
 
 # my email address
 #PBS -M adhulipa@usc.edu
@@ -26,9 +26,6 @@
 #PBS -d /home/rcf-40/adhulipa/ee-451/phw6/
 
 source /usr/usc/openmpi/default/setup.sh
-
-#compile
-#mpicc -o go sum.c
 
 # Now run the program
 mpiexec ./go
