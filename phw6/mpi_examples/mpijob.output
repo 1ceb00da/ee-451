@@ -1,0 +1,33 @@
+----------------------------------------
+Begin PBS Prologue Thu Apr  9 21:50:46 PDT 2015
+Job ID:            11890070.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Name:              mpi_example_scatter
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc2304 hpc2310 
+PVFS:              /scratch (98G), /staging (328T)
+TMPDIR:            /tmp/11890070.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Thu Apr  9 21:51:08 PDT 2015
+----------------------------------------
+Process 0: 10 
+Process 1: 20 
+Process 3: 40 
+Process 2: 30 
+----------------------------------------
+Begin PBS Epilogue Thu Apr  9 21:51:09 PDT 2015
+Job ID:           11890070.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         mpi_example_scatter
+Session:          4015
+Limits:           neednodes=2:ppn=2:myri,nodes=2:ppn=2:myri,walltime=00:10:00
+Resources:        cput=00:00:00,mem=3240kb,vmem=144088kb,walltime=00:00:01
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Thu Apr  9 21:51:15 PDT 2015
+----------------------------------------

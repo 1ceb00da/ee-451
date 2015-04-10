@@ -1,0 +1,34 @@
+----------------------------------------
+Begin PBS Prologue Fri Apr 10 00:55:30 PDT 2015
+Job ID:            11891690.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Name:              mpi_ring
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc2523 hpc2524 
+PVFS:              /scratch (394G), /staging (328T)
+TMPDIR:            /tmp/11891690.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Fri Apr 10 00:55:54 PDT 2015
+----------------------------------------
+Process 0 Initially: Msg 451
+Process 1: Msg = 452
+Process 0: Recieved Msg = 454 Done!
+Process 3: Msg = 454
+Process 2: Msg = 453
+----------------------------------------
+Begin PBS Epilogue Fri Apr 10 00:55:55 PDT 2015
+Job ID:           11891690.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         mpi_ring
+Session:          3326
+Limits:           neednodes=2:ppn=2:myri,nodes=2:ppn=2:myri,walltime=00:00:05
+Resources:        cput=00:00:00,mem=4520kb,vmem=153496kb,walltime=00:00:01
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Fri Apr 10 00:56:01 PDT 2015
+----------------------------------------
