@@ -4,6 +4,8 @@
 #include<mpi.h>
 
 
+
+
 /*typedef struct MPI_Status_ {
 	int MPI_SOURCE;
 	int MPI_TAG;
