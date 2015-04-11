@@ -3,16 +3,57 @@
 #include<string.h>
 #include<mpi.h>
 
+int my_random(int length) {
+    return (rand() % length);
+}
 
-int cmp_fn(const void *a, const void *b) 
-{ 
-	const int *ia = (const int *)a; // casting pointer types 
-	const int *ib = (const int *)b;
-	if ( *ia > *ib ) return 1;
-	if ( *ia < *ib ) return -1;
-	return 0;  
-	/* integer comparison: returns negative if b > a 
-	 * and positive if a > b */ 
+void swap(int *a, int i, int j) {
+    int t;
+    
+    //printf("i,j %d %d; ai,aj %d %d  \n",i,j,a[i], a[j]);
+    t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+    
+    
+}
+
+int partition(int *array, int left, int right) {
+    int pivot;
+    int wall;
+    int i;
+    int randIdx;
+    
+    randIdx = left + my_random(right-left);
+    randIdx = right-1;
+    pivot = array[randIdx];
+    ///printf("piv=%d;arr= ", pivot);
+    
+    wall = left;
+    
+    for (i = left; i < right; i++) {
+        if (array[i] < pivot) {
+            // swap a[i] & a[wall]
+            swap(array, i, wall);
+            wall += 1;
+        }
+    }
+    swap(array, wall, randIdx);
+    //printArray(array);
+    
+    
+    return wall;
+}
+
+
+void quickSort(int *array, int start, int end){
+    // you quick sort function goes here
+    int pivotIdx; int x;
+    if (start < end) {
+        pivotIdx = partition(array, start, end);
+        quickSort(array, start, pivotIdx);
+        quickSort(array, pivotIdx+1, end);
+    }
 }
 
 
@@ -61,8 +102,8 @@ void keep_max(int local[], int remote[], int size) {
 }
 
 int main(int argc, char **argv) {
-	int os = 512;
-	int cs = 128;
+	int os = 12;
+	int cs = 3;
 	
 	int a[os];
 	int i;
@@ -88,8 +129,8 @@ int main(int argc, char **argv) {
 
 	MPI_Scatter(a,cs,MPI_INT, chunk, cs,MPI_INT,0,MPI_COMM_WORLD);
 	
-	qsort(chunk, cs, sizeof(int), cmp_fn);
-
+//	qsort(chunk, cs, sizeof(int), cmp_fn);
+	quickSort(chunk, 0, cs);
 	if (rank == 0) {
 		MPI_Send(chunk, cs, MPI_INT, 1, 0, MPI_COMM_WORLD);
 		MPI_Recv(from1to0,cs,MPI_INT,1,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
