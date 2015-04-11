@@ -102,8 +102,8 @@ void keep_max(int local[], int remote[], int size) {
 }
 
 int main(int argc, char **argv) {
-	int os = 12;
-	int cs = 3;
+	int os = 512;
+	int cs = 128;
 	
 	int a[os];
 	int i;

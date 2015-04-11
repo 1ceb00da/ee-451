@@ -1,0 +1,33 @@
+----------------------------------------
+Begin PBS Prologue Fri Apr 10 19:42:49 PDT 2015
+Job ID:            11900639.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Name:              p3
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc1200 hpc1223 
+PVFS:              /scratch (1.7T), /staging (328T)
+TMPDIR:            /tmp/11900639.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Fri Apr 10 19:43:12 PDT 2015
+----------------------------------------
+unsorted - 
+498 1787 483 326 124 706 84 2040 795 488 1511 909 
+sorted - 
+84 124 326 483 488 498 706 795 909 1511 1787 2040 
+----------------------------------------
+Begin PBS Epilogue Fri Apr 10 19:43:14 PDT 2015
+Job ID:           11900639.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         p3
+Session:          32687
+Limits:           neednodes=2:ppn=2:myri,nodes=2:ppn=2:myri,walltime=00:00:05
+Resources:        cput=00:00:00,mem=13780kb,vmem=316200kb,walltime=00:00:03
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Fri Apr 10 19:43:20 PDT 2015
+----------------------------------------
