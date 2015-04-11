@@ -16,7 +16,7 @@
 #PBS -m be
 
 # My job is called give_a_name
-#PBS -N bitonic
+#PBS -N sum
 
 # my email address
 #PBS -M adhulipa@usc.edu
