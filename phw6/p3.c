@@ -8,7 +8,9 @@ int cmp_fn(const void *a, const void *b)
 { 
 	const int *ia = (const int *)a; // casting pointer types 
 	const int *ib = (const int *)b;
-	return *ia  - *ib; 
+	if ( *ia > *ib ) return 1;
+	if ( *ia < *ib ) return -1;
+	return 0;  
 	/* integer comparison: returns negative if b > a 
 	 * and positive if a > b */ 
 }
@@ -59,21 +61,21 @@ void keep_max(int local[], int remote[], int size) {
 }
 
 int main(int argc, char **argv) {
+	int os = 512;
+	int cs = 128;
 	
-	int a[512];
+	int a[os];
 	int i;
 	int size, rank;
 
-	int chunk[128];
+	int chunk[cs];
 	
-	int from0to1[128], from0to2[128];
-	int from1to0[128], from1to3[128];
-	int from2to3[128], from2to0[128];
-	int from3to2[128], from3to1[128];
+	int from0to1[cs], from0to2[cs];
+	int from1to0[cs], from1to3[cs];
+	int from2to3[cs], from2to0[cs];
+	int from3to2[cs], from3to1[cs];
 
-	int final[512];
-	int os = 512;
-	int cs = 128;
+	int final[os];
 
 	MPI_Init(NULL,NULL);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
