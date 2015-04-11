@@ -4,6 +4,57 @@
 #include<mpi.h>
 
 
+
+void swap(int *a, int i, int j) {
+    int t;
+    
+    //printf("i,j %d %d; ai,aj %d %d  \n",i,j,a[i], a[j]);
+    t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+    
+    
+}
+
+int partition(int *array, int left, int right) {
+    int pivot;
+    int wall;
+    int i;
+    int randIdx;
+    
+    randIdx = left + my_random(right-left);
+    randIdx = right-1;
+    pivot = array[randIdx];
+    ///printf("piv=%d;arr= ", pivot);
+    
+    wall = left;
+    
+    for (i = left; i < right; i++) {
+        if (array[i] < pivot) {
+            // swap a[i] & a[wall]
+            swap(array, i, wall);
+            wall += 1;
+        }
+    }
+    swap(array, wall, randIdx);
+    //printArray(array);
+    
+    
+    return wall;
+}
+
+
+void quickSort(int *array, int start, int end){
+    // you quick sort function goes here
+    int pivotIdx; int x;
+    if (start < end) {
+        pivotIdx = partition(array, start, end);
+        quickSort(array, start, pivotIdx);
+        quickSort(array, pivotIdx+1, end);
+    }
+}
+
+
 int cmp_fn(const void *a, const void *b) 
 { 
 	const int *ia = (const int *)a; // casting pointer types 
