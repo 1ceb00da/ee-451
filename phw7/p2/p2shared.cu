@@ -3,45 +3,23 @@
 #include<time.h>
 
 #define n 1024
-#define block_size 32
-/*
-__global__ void mult_mat(int *a, int *b, int *c) {
-	int blockRow = blockIdx.y, blockCol = blockIdx.x;
-	
-	int row = threadIdx.y, col = threadIdx.x;
 
-	for (int m = 0; m < (n/block_size); ++m) {
-		
-	}
-}
-*/
 __global__ void mul_mat(int *a, int *b, int *c) {
-	int blockRow = blockIdx.y;
-	int blockCol = blockIdx.x;
-
-	int row = threadIdx.y;
-	int col = threadIdx.x;
-
-	int i,j;
-
-	int myx = blockIdx.x * blockDim.x + threadIdx.x;
-	int myy = blockIdx.y * blockDim.y + threadIdx.y;
+	int myx, myy, i;
+	myx = blockIdx.x * blockDim.x + threadIdx.x;
+	myy = blockIdx.y * blockDim.y + threadIdx.y;
 
 	int local=0;
-	
-	__shared__ int As[32][32];
-	__shared__ int Bs[32][32];
-	
+	__shared__ float ashare[n][n];
+	__shared__ float bshare[n][n];
 
-	for(i=0;i<n/block_size;i++) {
-		As[row][col] = a[myx*n + (i*blockDim.y + col)];
-		Bs[row][col] = b[(i*blockDim.x+row)*n + myy];
-		__syncthreads();
+	ashare[myx][myy] = a[myx*n+myy];
+	bshare[myx][myy] = b[myx*n+myy];
 
-		for(j=0;j<block_size;j++)
-			local += As[row][j]*Bs[j][col];
-		__syncthreads();
-	}
+	__syncthreads();
+
+	for (i = 0; i < n; i++)
+		local += ashare[myx][i] * bshare[i][myy];
 
 	c[myx*n+myy] = local;
 }
@@ -72,29 +50,27 @@ int main() {
 
 	cudaMemcpy(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice);
 	cudaMemcpy(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice);
-	
-
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 
-	cudaEventRecord(start, 0);	
+	cudaEventRecord(start,0);
 	mul_mat<<<dimGrid, dimBlock>>> (gpua, gpub, gpuc);
-	cudaEventRecord(stop, 0);
-	
+	cudaEventRecord(stop,0);
+
+
 	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&time, start, stop);
 
 	cudaMemcpy(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost);
-	
-	cudaEventElapsedTime(&time, start, stop);
+
 	printf("C[451][451] = %d\n",c[451*1024 + 451]);
 	printf("Time - %f\n", time);
 
+	cudaEventDestroy(start);
+	cudaEventDestroy(stop);
 	free(a);
 	free(b);
 	free(c);
-
-	cudaEventDestroy(start);
-	cudaEventDestroy(stop);
 
 	cudaFree(gpua);
 	cudaFree(gpub);

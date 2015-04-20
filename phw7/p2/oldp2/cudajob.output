@@ -1,0 +1,30 @@
+----------------------------------------
+Begin PBS Prologue Sat Apr 18 21:43:43 PDT 2015
+Job ID:            11956710.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Name:              CUDAtest
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc3025 
+TMPDIR:            /tmp/11956710.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Sat Apr 18 21:43:43 PDT 2015
+----------------------------------------
+C[451][451] = 2048
+Time - 21.761568
+----------------------------------------
+Begin PBS Epilogue Sat Apr 18 21:43:44 PDT 2015
+Job ID:           11956710.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         CUDAtest
+Session:          41831
+Limits:           neednodes=1:ppn=8:gpu,nodes=1:ppn=8:gpu,walltime=00:08:00
+Resources:        cput=00:00:00,mem=0kb,vmem=0kb,walltime=00:00:01
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Sat Apr 18 21:43:44 PDT 2015
+----------------------------------------
