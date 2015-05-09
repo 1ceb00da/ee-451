@@ -57,7 +57,7 @@ int main() {
 	
 	cudaMemcpyAsync(&gpua[n*n/2], &a[n*n/2], sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[1]);
 	cudaMemcpyAsync(&gpub[n*n/2], &b[n*n/2], sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[1]);
-	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (gpua, gpub, gpuc);
+	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (&gpua[n*n/2], &gpub[n*n/2], &gpuc[n*n/2]);
 	cudaMemcpyAsync(&c[n*n/2], gpuc[n*n/2], sizeof(int)*n*n/2, cudaMemcpyDeviceToHost, stream[1]);
 
 	cudaEventRecord(stop,0);
