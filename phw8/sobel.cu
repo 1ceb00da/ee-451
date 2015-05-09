@@ -11,17 +11,7 @@
 __global__ void sobel(unsigned char *a, unsigned char *c) {
 	int myx, myy, i;
 	myx = blockIdx.x * blockDim.x + threadIdx.x;
-	myy = blockIdx.y * blockDim.y + threadIdx.y;
-
-    
-    unsigned char gx00=-1, gx01=-2, gx02=-1;
-    unsigned char gx10=0, gx11=0, gx12=0;
-    unsigned char gx20=1, gx21=2, gx22=1;
-    
-    unsigned char gy00=-1, gy01=0, gy02=1;
-    unsigned char gy10=-2, gy11=0, gy12=2;
-    unsigned char gy20=-1, gy21=0, gy22=1;
-    
+	myy = blockIdx.y * blockDim.y + threadIdx.y;    
     
     unsigned char gx[3][3] =
     {
