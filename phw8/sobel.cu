@@ -13,21 +13,21 @@ __global__ void sobel(unsigned char *a, unsigned char *c) {
 	myx = blockIdx.x * blockDim.x + threadIdx.x;
 	myy = blockIdx.y * blockDim.y + threadIdx.y;    
     
-    unsigned char gx[3][3] =
+    int gx[3][3] =
     {
         {-1,2,-1},
         {0,0,0},
         {1,2,1}
     };
     
-    unsigned char gy[3][3] =
+    int gy[3][3] =
     {
         {-1,0,1},
         {-2,0,2},
         {-1,0,1}
     };
     
-    unsigned char dx = 0, dy = 0;
+    int dx = 0, dy = 0;
 
     dx += (a[((myx-1)*(n+2)) + myy-1] * gx[0][0])
        +  (a[((myx-1)*(n+2)) + myy] * gx[0][1])
@@ -108,7 +108,6 @@ int main() {
 	cudaEventDestroy(start);
 	cudaEventDestroy(stop);
 	free(a);
-	free(b);
 	free(c);
 
 	cudaFree(gpua);
