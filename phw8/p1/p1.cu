@@ -11,10 +11,9 @@ __global__ void mul_mat(int *a, int *b, int *c) {
 
 	int local;
 
-	n = n/2;
 
-	for (i = 0; i < n; i++)
-		local += a[myx+n*i] * b[n*i+myy];
+	for (i = 0; i < n/2; i++)
+		local += a[myx+(n/2)*i] * b[(n/2)*i+myy];
 
 	c[myx*n+myy] = local;
 }
