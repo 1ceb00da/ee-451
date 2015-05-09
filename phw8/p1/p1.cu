@@ -45,26 +45,30 @@ int main() {
 	cudaStreamCreate(&stream[0]);
 	cudaStreamCreate(&stream[1]);
 
-	cudaMemcpyAsync(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice, stream[0]);
-	cudaMemcpyAsync(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice, stream[0]);
-	//cudaMemcpy(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice);
-	//cudaMemcpy(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice);
-	
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 
 	cudaEventRecord(start,0);
+	
+	cudaMemcpyAsync(gpua, a, sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[0]);
+	cudaMemcpyAsync(gpub, b, sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[0]);
 	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (gpua, gpub, gpuc);
+	cudaMemcpyAsync(c, gpuc, sizeof(int)*n*n/2, cudaMemcpyDeviceToHost, stream[0]);
+	
+	cudaMemcpyAsync(&gpua[n*n/2], &a[n*n/2], sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[1]);
+	cudaMemcpyAsync(&gpub[n*n/2], &b[n*n/2], sizeof(int)*n*n/2, cudaMemcpyHostToDevice, stream[1]);
+	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (gpua, gpub, gpuc);
+	cudaMemcpyAsync(&c[n*n/2], gpuc[n*n/2], sizeof(int)*n*n/2, cudaMemcpyDeviceToHost, stream[1]);
+
 	cudaEventRecord(stop,0);
 
 	cudaEventSynchronize(stop);
 	cudaEventElapsedTime(&time, start, stop);
 	
-	cudaMemcpyAsync(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost, stream[0]);
-	//cudaMemcpy(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost);
-
 	cudaStreamSynchronize(stream[0]);
+	cudaStreamSynchronize(stream[1]);
 	cudaStreamDestroy(stream[0]);
+	cudaStreamDestroy(stream[1]);
 
 	printf("C[451][451] = %d\n",c[451*1024 + 451]);
 	printf("Time - %f\n", time);

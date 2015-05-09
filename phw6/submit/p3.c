@@ -102,8 +102,8 @@ void keep_max(int local[], int remote[], int size) {
 }
 
 int main(int argc, char **argv) {
-	int os = 12;
-	int cs = 3;
+	int os = 512;
+	int cs = 128;
 	
 	int a[os];
 	int i;
@@ -198,11 +198,8 @@ int main(int argc, char **argv) {
 	MPI_Gather(chunk,cs,MPI_INT, final, cs, MPI_INT, 0, MPI_COMM_WORLD);
 
 	if (rank == 0) {
-		printf("unsorted - \n");
-		for (i=0;i<os;i++)
-			printf("%d ", a[i]);
 		
-		printf("\nsorted - \n");
+		printf("\nsorted array - \n");
                 for (i=0;i<os;i++)
 			printf("%d ", final[i]);
 		printf("\n");
