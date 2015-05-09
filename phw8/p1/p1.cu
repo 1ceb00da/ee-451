@@ -41,20 +41,30 @@ int main() {
 	cudaMalloc((void**)&gpub, sizeof(int)*n*n);
 	cudaMalloc((void**)&gpuc, sizeof(int)*n*n);
 
-	cudaMemcpy(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice);
-	cudaMemcpy(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice);
+	cudaStream_t stream[2];
+	cudaStreamCreate(&stream[0]);
+	cudaStreamCreate(&stream[1]);
+
+	cudaMemcpyAsync(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice, stream[0]);
+	cudaMemcpyAsync(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice, stream[0]);
+	//cudaMemcpy(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice);
+	//cudaMemcpy(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice);
+	
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 
 	cudaEventRecord(start,0);
-	mul_mat<<<dimGrid, dimBlock>>> (gpua, gpub, gpuc);
+	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (gpua, gpub, gpuc);
 	cudaEventRecord(stop,0);
-
 
 	cudaEventSynchronize(stop);
 	cudaEventElapsedTime(&time, start, stop);
+	
+	cudaMemcpyAsync(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost, stream[0]);
+	//cudaMemcpy(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost);
 
-	cudaMemcpy(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost);
+	cudaStreamSynchronize(stream[0]);
+	cudaStreamDestroy(stream[0]);
 
 	printf("C[451][451] = %d\n",c[451*1024 + 451]);
 	printf("Time - %f\n", time);

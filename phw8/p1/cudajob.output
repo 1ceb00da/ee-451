@@ -1,30 +1,31 @@
 ----------------------------------------
-Begin PBS Prologue Sun Apr 19 17:57:40 PDT 2015
-Job ID:            11959624.hpc-pbs.hpcc.usc.edu
+Begin PBS Prologue Fri May  8 23:07:53 PDT 2015
+Job ID:            12059643.hpc-pbs.hpcc.usc.edu
 Username:          adhulipa
 Group:             csci-ar
+Project:           default
 Name:              CUDAtest
 Queue:             quick
 Shared Access:     no
 All Cores:         no
 Has MIC:           no
-Nodes:             hpc3026 
-TMPDIR:            /tmp/11959624.hpc-pbs.hpcc.usc.edu
-End PBS Prologue Sun Apr 19 17:57:41 PDT 2015
+Nodes:             hpc3027 
+TMPDIR:            /tmp/12059643.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Fri May  8 23:07:54 PDT 2015
 ----------------------------------------
-C[451][451] = 2048
-Time - 19.828672
+C[451][451] = 2050
+Time - 23.494400
 ----------------------------------------
-Begin PBS Epilogue Sun Apr 19 17:57:41 PDT 2015
-Job ID:           11959624.hpc-pbs.hpcc.usc.edu
+Begin PBS Epilogue Fri May  8 23:08:00 PDT 2015
+Job ID:           12059643.hpc-pbs.hpcc.usc.edu
 Username:         adhulipa
 Group:            csci-ar
 Job Name:         CUDAtest
-Session:          29475
+Session:          51280
 Limits:           neednodes=1:ppn=16:gpus=2,nodes=1:ppn=16:gpus=2,walltime=00:08:00
-Resources:        cput=00:00:00,mem=0kb,vmem=0kb,walltime=00:00:01
+Resources:        cput=00:00:00,mem=1764kb,vmem=18344kb,walltime=00:00:05
 Queue:            quick
 Shared Access:    no
 Has MIC:          no
-End PBS Epilogue Sun Apr 19 17:57:41 PDT 2015
+End PBS Epilogue Fri May  8 23:08:00 PDT 2015
 ----------------------------------------
