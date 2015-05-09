@@ -66,8 +66,8 @@ int main() {
     
     FILE *fp;
 	
-    int numBlocks = 6;
-    dim3 threadsPerBlock(32,32);
+    dim3 numBlocks(64,64);
+    dim3 threadsPerBlock(3,3);
     
     
     // Read image
