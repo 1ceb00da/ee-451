@@ -44,7 +44,9 @@ public class WordCount {
         sum += val.get();
       }
       result.set(sum);
-      context.write(key, result);
+      if (sum > 20) {
+        context.write(key, result);
+      }
     }
   }
 
