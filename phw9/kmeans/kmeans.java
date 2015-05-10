@@ -69,6 +69,11 @@ public class kmeans {
 			double nearest_center = mCenters.get(0);
 			// Find the minimum center from a point here//
 			for (double c : mCenters) {
+                min1 = c-point;
+                if(Math.abs(min1) < Math.min(min2)) {
+                    nearest_center = c;
+                    min2 = min1;
+                }
 
 			}
 			//******************************************//
@@ -102,6 +107,7 @@ public class kmeans {
 
 			// Calculate new center value here//
 			
+            newCenter = sum / no_elements;
 			//*******************************//
 
 			// Emit new center and point
