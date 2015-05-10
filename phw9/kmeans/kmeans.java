@@ -70,7 +70,7 @@ public class kmeans {
 			// Find the minimum center from a point here//
 			for (double c : mCenters) {
                 min1 = c-point;
-                if(Math.abs(min1) < Math.min(min2)) {
+                if(Math.abs(min1) < Math.abs(min2)) {
                     nearest_center = c;
                     min2 = min1;
                 }
