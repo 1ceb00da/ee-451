@@ -1,0 +1,254 @@
+Problem 1 (15  2=30 points)
+Define/explain the following terms:
+
+	Static mapping for load balancing
+
+
+
+
+
+
+
+	Randomized block distribution
+
+
+
+
+
+
+	Block cyclic distribution
+
+
+
+
+
+
+	Self-scheduling
+
+
+
+
+
+
+
+	Bulk Synchronous Parallel (BSP) model
+
+
+
+
+
+
+
+
+	Scatter operation
+
+
+
+
+
+
+
+	Recursive doubling technique
+
+
+
+
+
+
+
+
+	Prefix sum
+
+
+
+
+
+
+
+
+	Master-Slave model
+
+
+
+
+
+
+
+	Loop parallelism
+
+
+
+
+
+
+
+
+	Race condition
+
+
+
+
+
+
+
+
+	Serializability of a program
+
+
+
+
+
+
+
+
+	Blocking Send operation
+
+
+
+
+
+
+
+	Communication domain
+
+
+
+
+
+
+
+	SPMD model
+
+
+
+
+
+
+
+
+Problem 2 (15 points)
+One-to-all broadcast:
+In the class, we discussed a hypercube One-to-all-broadcast algorithm in which the communication starts with the highest dimension (the dimension specified by the most significant bit of the binary representation of a node index) and proceeds along successively lower dimensions. Figure 1 illustrates it on an eight node hypercube with node 0 as the source.
+
+(a) Write an iterative pseudo code for One-to-all broadcast on a p-node (p=2k) hypercube (network model) where the communications starts with the lowest dimension. Assume the data to be broadcast is 1 unit.
+
+(b) What is the running time of the algorithm? You may use order notation.  
+
+(c) Show how the algorithm can be simulated in a 1-D mesh of size p to run efficiently. What is the running time?
+
+ 
+Figure 1. One-to-all broadcast on an 8-node hypercube
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem 3 (15 points)
+Gather in hypercube:
+(a) Write a recursive program to perform the Gather operation in a p-node (p=2k) hypercube with node 0 as the destination using the network model. Assume the data to be gathered is of size 1 unit in each node.
+
+(b) Derive an exact expression for the total number of steps and the total communication time.  
+
+(c) If each node in the hypercube can use multiple ports to send and receive, what is the lower bound for the total communication time of gather operation? What is the lower bound if each node uses single port communication? Explain. Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final Good luck to your final
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem 4 (15 points)
+Message Passing/Shared Memory for Matrix Multiplication:
+In the lecture, we discussed the Cannon¡¯s algorithm for matrix multiplication C = AB. In this problem we will implement the Cannon¡¯s algorithm using a hybrid model: MPI for inter-node communication and OpenMP for local matrix multiplication in a processor. Assume the input matrix size is n¡Án and there are p processors laid out in a ¡Ìp¡Á¡Ìp two-dimensional array. Assume each node has 4 cores. 
+(a) Write a block matrix multiplication function in OpenMP using 4 threads (using task-parallelism).
+
+(b) Write a complete pseudo code using blocking non-buffered message passing primitives for inter-node communication and your code in (a) to perform Cannon¡¯s algorithm. Assume i and j are the ranks of Node_(i,j) in the row and column communication domain, respectively. Specify the local and global variables if any. Show the input and output data partitioning and data layout.
+
+(c) What is the total data communicated among all the nodes? Use order notation.
+ 
+Figure 2. Hybrid model
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem 5 (10 points)
+Data Decomposition:
+Partition an  matrix using block cyclic distribution with each block of size 1 among p processes (assume n and p are powers of 2,. Assume row major order. 
+	For n = 4, p = 2, draw a data partitioning diagram showing the assignment of elements to processes.
+ 
+	Define the mapping function showing how the elements are assigned to each process.
+   
+	Consider n¡Án matrix multiplication C = AB. Assume p=n. Partition the input and output matrices among p processes using the approach above, what is the total amount of data communication?    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem 6 (15 points)
+Prefix Computation:
+The prefix AND of a sequence of p bits, The p-bit prefix AND can be computed in O(log?p) time in the circuit model as discussed in the class. Figure 3 shows such a design for computing the prefix AND for 4-bit input. 
+
+(a) Generalize the design and show a design for computing the prefix AND for 8-bit input.   
+
+(b) For p-bit prefix AND computation, drive an exact expression for the total delay. 
+
+(c) What is the total number of AND gates used? Use order notation.   
+
+ 
+Figure 3
+
+
+
