@@ -11,9 +11,8 @@ __global__ void mul_mat(int *a, int *b, int *c) {
 
 	int local;
 
-
-	for (i = 0; i < n/2; i++)
-		local += a[myx+(n/2)*i] * b[(n/2)*i+myy];
+	for (i = 0; i < n; i++)
+		local += a[myx+n*i] * b[n*i+myy];
 
 	c[myx*n+myy] = local;
 }
@@ -42,36 +41,22 @@ int main() {
 	cudaMalloc((void**)&gpub, sizeof(int)*n*n);
 	cudaMalloc((void**)&gpuc, sizeof(int)*n*n);
 
-	cudaStream_t stream[2];
-	cudaStreamCreate(&stream[0]);
-	cudaStreamCreate(&stream[1]);
-
+	cudaMemcpy(gpua, a, sizeof(int)*n*n, cudaMemcpyHostToDevice);
+	cudaMemcpy(gpub, b, sizeof(int)*n*n, cudaMemcpyHostToDevice);
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 
 	cudaEventRecord(start,0);
-	
-	cudaMemcpyAsync(gpua, a, sizeof(int)*n*n/4, cudaMemcpyHostToDevice, stream[0]);
-	cudaMemcpyAsync(gpub, b, sizeof(int)*n*n/4, cudaMemcpyHostToDevice, stream[0]);
-	mul_mat<<<dimGrid, dimBlock, 0, stream[0]>>> (gpua, gpub, gpuc);
-	cudaMemcpyAsync(c, gpuc, sizeof(int)*n*n/4, cudaMemcpyDeviceToHost, stream[0]);
-	
-	cudaMemcpyAsync(&gpua[n*n/4], &a[n*n/4], sizeof(int)*n*n/4, cudaMemcpyHostToDevice, stream[1]);
-	cudaMemcpyAsync(&gpub[n*n/4], &b[n*n/4], sizeof(int)*n*n/4, cudaMemcpyHostToDevice, stream[1]);
-	mul_mat<<<dimGrid, dimBlock, 0, stream[1]>>> (&gpua[n*n/4], &gpub[n*n/4], &gpuc[n*n/4]);
-	cudaMemcpyAsync(&c[n*n/4], &gpuc[n*n/4], sizeof(int)*n*n/4, cudaMemcpyDeviceToHost, stream[1]);
-
+	mul_mat<<<dimGrid, dimBlock>>> (gpua, gpub, gpuc);
 	cudaEventRecord(stop,0);
+
 
 	cudaEventSynchronize(stop);
 	cudaEventElapsedTime(&time, start, stop);
-	
-	cudaStreamSynchronize(stream[0]);
-	cudaStreamSynchronize(stream[1]);
-	cudaStreamDestroy(stream[0]);
-	cudaStreamDestroy(stream[1]);
 
-	printf("C[451][451] = %d\n",c[451*n + 451]);
+	cudaMemcpy(c, gpuc, sizeof(int)*n*n, cudaMemcpyDeviceToHost);
+
+	printf("C[451][451] = %d\n",c[451*1024 + 451]);
 	printf("Time - %f\n", time);
 
 	cudaEventDestroy(start);
