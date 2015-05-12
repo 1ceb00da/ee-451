@@ -1,0 +1,44 @@
+----------------------------------------
+Begin PBS Prologue Sat May  9 18:43:49 PDT 2015
+Job ID:            12069271.hpc-pbs.hpcc.usc.edu
+Username:          adhulipa
+Group:             csci-ar
+Project:           default
+Name:              STDIN
+Queue:             quick
+Shared Access:     no
+All Cores:         no
+Has MIC:           no
+Nodes:             hpc1728 
+TMPDIR:            /tmp/12069271.hpc-pbs.hpcc.usc.edu
+End PBS Prologue Sat May  9 18:43:49 PDT 2015
+----------------------------------------
+ee-451
+ee-451
+
+hpc-pbs.hpcc.usc.edu: 
+                                                                                  Req'd    Req'd       Elap
+Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory   Time    S   Time
+----------------------- ----------- -------- ---------------- ------ ----- ------ ------ --------- - ---------
+12069271.hpc-pbs.hpcc.  adhulipa    quick    STDIN                 0     1      1    --   00:30:00 R  00:00:00
+
+hpc-pbs.hpcc.usc.edu: 
+                                                                                  Req'd    Req'd       Elap
+Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory   Time    S   Time
+----------------------- ----------- -------- ---------------- ------ ----- ------ ------ --------- - ---------
+12069271.hpc-pbs.hpcc.  adhulipa    quick    STDIN                 0     1      1    --   00:30:00 R  00:00:00
+12069275.hpc-pbs.hpcc.usc.edu
+----------------------------------------
+Begin PBS Epilogue Sat May  9 18:43:50 PDT 2015
+Job ID:           12069271.hpc-pbs.hpcc.usc.edu
+Username:         adhulipa
+Group:            csci-ar
+Job Name:         STDIN
+Session:          20419
+Limits:           neednodes=1,nodes=1,walltime=00:30:00
+Resources:        cput=00:00:00,mem=0kb,vmem=0kb,walltime=00:00:01
+Queue:            quick
+Shared Access:    no
+Has MIC:          no
+End PBS Epilogue Sat May  9 18:43:50 PDT 2015
+----------------------------------------

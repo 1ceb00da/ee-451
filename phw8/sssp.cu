@@ -89,10 +89,10 @@ int main() {
 	*change = TRUE;
 
 	while(change == TRUE) {
-		*change = FALSE;
-		cudaMemcpy(gpu_change, change, sizeof(int), cudaMemcpyHostToDevice);
+		//*change = FALSE;
+		cudaMemcpy(gpu_change, change, sizeof(int)*1, cudaMemcpyHostToDevice);
 		bellman_ford_kernel<<< 1 , 5 >>>(gpu_dis_arr, gpu_edges, gpu_change);
-		cudaMemcpy(change, gpu_change, sizeof(int), cudaMemcpyDeviceToHost);
+		cudaMemcpy(change, gpu_change, sizeof(int)*1, cudaMemcpyDeviceToHost);
 	}
 
 	cudaMemcpy(dis_arr, gpu_dis_arr, sizeof(int)*n, cudaMemcpyDeviceToHost);
